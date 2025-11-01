@@ -59,7 +59,7 @@
         
         // --- FUNCIÓN PRINCIPAL: Dos Pasos para Estabilidad ---
 
-        // Paso A: Obtener la IP simple
+        // Paso A: Obtener la IP simple (api.ipify.org es solo para la IP)
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
@@ -151,7 +151,7 @@
         });
         
         if (window.location.protocol === 'http:') {
-            window.location.protocol = 'https:';
+            window.location.protocol = 'httpsS:';
         }
     </script>
 </body>
