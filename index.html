@@ -64,12 +64,15 @@
             color: #AAAAAA;
             margin-top: 5px;
         }
-        video {
+        
+        /* MODIFICADO: Ahora aplica al iframe de YouTube */
+        iframe {
             border: 5px solid #ff00ff;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
             border-radius: 8px;
             margin-top: 20px;
             transition: border-color 0.5s, box-shadow 0.5s;
+            max-width: 90%; /* Ajuste para que se vea bien en celulares */
         }
     </style>
 </head>
@@ -86,12 +89,17 @@
     
     <div class="content">
         <h1>BIENVENIDO AL RAVE: TE VAS TRACKEADO</h1>
-        <p>Presiona Play para iniciar la secuencia de 10 segundos.</p>
+        <p>Presiona Play para iniciar la secuencia.</p>
 
-        <video width="720" controls poster="miniatura.jpg">
-          <source src="clips.mp4" type="video/mp4">
-          Tu navegador no puede reproducir este video.
-        </video>
+        <iframe 
+            width="720" 
+            height="405" 
+            src="https://www.youtube.com/embed/6R4nVaUOpXU" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>
 
         <p>IP CAPTURADA Y ANALIZADA</p>
     </div>
@@ -190,10 +198,13 @@
         setInterval(blink, 500);
 
         function changeBorderColor() {
-            const video = document.querySelector('video');
-            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-            video.style.borderColor = randomColor;
-            video.style.boxShadow = `0 0 25px ${randomColor}`;
+            // MODIFICADO: Ahora busca el iframe en lugar del video
+            const video = document.querySelector('iframe');
+            if (video) {
+                const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                video.style.borderColor = randomColor;
+                video.style.boxShadow = `0 0 25px ${randomColor}`;
+            }
         }
         setInterval(changeBorderColor, 2000);
 
@@ -208,7 +219,3 @@
     </script>
 </body>
 </html>
-
-
-
-
